@@ -1,8 +1,8 @@
 # Assignment III
 
 
-Repository for the creation of Assignment III for EEL 4742.
+Repository for the creation of Assignment III for Embedded Systems
 
-Members: Lance Adler, Zachary Freer, Hunter Tanchin
+Members: Lance A., Zachary F., Hunter T.
 
 Due date: March 22, 2017.
