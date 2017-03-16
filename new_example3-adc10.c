@@ -1,3 +1,5 @@
+// http://coder-tronics.com/msp430-adc-tutorial/
+
 // Global variables
 int adc[10] = {0}; //Sets up an array of 10 integers and zero's the values
 int avg_adc = 0;
