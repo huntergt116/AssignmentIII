@@ -1,30 +1,59 @@
 // MAIN.C
 
 // ========================================================================//
-// NOTES
+// OBJECTIVES:
+// 0. Read temp every 5 minutes
+// 1. Read UART command: up to 16 chars (t, s, o, or l)
+// 2. Execute command: (store at least 32 temps, set time, read time, read temp, read all temps)
+// 3. Enter LPM (LPM3) and wait for next command
 // ========================================================================//
 
-// LPM: Sections 2.3/2.4 in slau144j
-// UART: Chapter 15 in slau144j
+// LIBRARIES
+#include <stdio.h>
+#include <stdlib.h>
+#include <limits.h>
+
+
+// GLOBALS
+  char *buffer[]; // Buffer for temp readings (size?)
+  
+
+
+// ========================================================================//
+// NOTES - [ LPM: Sections 2.3/2.4 in slau144j ]
+//         [ UART: Chapter 15 in slau144j ]
+// ========================================================================//
+
+/* -----------1------------- */
+
+// *Use ACLK for RT clock and 9600 8N1 for UART
+
+/* -----------2------------- */
 
 /*
-0. Read temp every 5 minutes
-1. Read UART command: up to 16 chars (t, s, o, or l)
-2. Execute command: (store at least 32 temps, set time, read time, read temp, read all temps)
-3. Enter LPM (LPM3) and wait for next command
+"You might be wondering why a real time clock is based on 32.768kHz; 32768 is exactly 2^15. 
+This number can be divided down using binary values to give you a frequency of 1Hz, or a 
+period of 1 second. This is why 32kHz is the standard frequency used in real-time clocks."
 */
 
-// Use ACLK for RT clock and 9600 8N1 for UART
+/* -----------3------------- */
 
-// enable_LPM3
-  BIS   #GIE+CPUOFF+SCG1+SCG0,  SR
+/*
+to enable_LPM3:
+__bis_SR_register(GIE + CPUOFF + SCG1 + SCG0);
+*/
+
+/* -----------4------------- */
+
+// Article on ADC: https://www.embeddedrelated.com/showarticle/199.php
 
 // ========================================================================//
-// STORE EVERY 5 MINUTES - Qeue structure
+// STORE EVERY 5 MINUTES - Queue structure
 // ========================================================================//
 
-
-
+/* 
+!!! NOTES FOR QUEUES FROM COP3502 HAVE BEEN INCLUDED IN A SECOND BRANCH
+*/
 
 // ========================================================================//
 // UART MODES: t, s, o, l
@@ -37,7 +66,6 @@ Output to the serial terminal the current time of the system using the form hhmm
 hh is the two digit hour in 24-hour format, mm is the two digit minute in the hour, and ss is
 the two digit second within the minute.
 */
-
 
 
 
