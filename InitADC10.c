@@ -4,4 +4,7 @@ void InitADC(void)
 {
   
   // Set ADC_10 control reg
-  ADC10CTL1 = 
+  ADC10CTL1 = ;
+  
+  
+}
