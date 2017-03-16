@@ -34,6 +34,9 @@
 "You might be wondering why a real time clock is based on 32.768kHz; 32768 is exactly 2^15. 
 This number can be divided down using binary values to give you a frequency of 1Hz, or a 
 period of 1 second. This is why 32kHz is the standard frequency used in real-time clocks."
+
+http://www.msp430launchpad.com/2012/03/using-aclk-and-32khz-crystal.html
+ (also contains test code for crystal)
 */
 
 /* -----------3------------- */
@@ -47,6 +50,26 @@ __bis_SR_register(GIE + CPUOFF + SCG1 + SCG0);
 
 // Article on ADC: https://www.embeddedrelated.com/showarticle/199.php
 
+/* -----------5------------- */
+
+  /* For a 1MHz clock:
+ 
+    1    32768
+   --- x ----- = 32 clock ticks
+   1e6     1
+  */
+
+
+/* -----------6------------- */
+
+
+/* -----------*------------- */
+
+
+int main(void)
+{
+ 
+
 // ========================================================================//
 // STORE EVERY 5 MINUTES - Queue structure
 // ========================================================================//
@@ -55,21 +78,20 @@ __bis_SR_register(GIE + CPUOFF + SCG1 + SCG0);
 !!! NOTES FOR QUEUES FROM COP3502 HAVE BEEN INCLUDED IN A SECOND BRANCH
 */
 
+  
 // ========================================================================//
 // UART MODES: t, s, o, l
 // ========================================================================//
 
 
-/*
-t: Show the current time of the system.
+/* t: Show the current time of the system.
 Output to the serial terminal the current time of the system using the form hhmmss, where
 hh is the two digit hour in 24-hour format, mm is the two digit minute in the hour, and ss is
-the two digit second within the minute.
-*/
+the two digit second within the minute.*/
 
 
 
-/*s: Set the current time of the system.
+/* s: Set the current time of the system.
 Set the current time of the system to the provided argument. There will be no space between
 the command and its argument. The argument will be on the form hhmmss, where hh is the
 two digit hour in 24-hour format, mm is the two digit minute in the hour, and ss is the two
@@ -86,10 +108,14 @@ have been performed, the message “No temperatures recorded.” must be display
 
 
 
-/*l: Show all the temperature readings and their timestamps.
+/* l: Show all the temperature readings and their timestamps.
 Output to the serial terminal all the temperature readings and their timestamps. The output
 should be in chronological order, oldest first. The output must have the form hhmmss: T,
 where hh is the two digit hour in 24-hour format, mm is the two digit minute in the hour, ss is
 the two digit second within the minute, and T is the measured temperature. All entries must
 be removed from the list. If no readings have been performed, the message “No temperatures
 recorded.” must be displayed. */
+
+  
+  
+}
