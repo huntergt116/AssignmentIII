@@ -62,6 +62,15 @@ __bis_SR_register(GIE + CPUOFF + SCG1 + SCG0);
 
 /* -----------6------------- */
 
+// Files in Orlando's example project:
+// dco.c
+// dco.h
+// uart.c
+// uart.h
+// bitmanip.h
+// main.c - edit: declare i before the for loop
+// Makefile
+// Makefile.in
 
 /* -----------*------------- */
 
