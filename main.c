@@ -26,7 +26,7 @@
 
 /* -----------1------------- */
 
-// *Use ACLK for RT clock and 9600 8N1 for UART
+// *Use ACLK (ADC10CTL1 = ADC10SSEL_1)
 
 /* -----------2------------- */
 
