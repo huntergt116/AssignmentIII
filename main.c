@@ -12,11 +12,18 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <limits.h>
-
+#define PRINT_ERR “No temperatures recorded.”
 
 // GLOBALS
-  char *buffer[]; // Buffer for temp readings (size?)
-  
+  char *cmd[17];        // Command String
+  char cmd_ind = 0;     // To cycle through the Command String
+  char *temps[64];      // Temperature Storage (is 64 enough?)
+  char temp_T, temp_H;  // Tail and Header pointers for 'char *temps'
+  char time[3];         // Stores our time in {hr,min,sec} format
+  char **hr;            // Pointer to time[0]
+  char **min;           // Pointer to time[1]
+  char **sec;           // Pointer to time[2]
+  char current_temp;    // Used for storing the current temperature
 
 
 // ========================================================================//
@@ -77,17 +84,34 @@ __bis_SR_register(GIE + CPUOFF + SCG1 + SCG0);
 
 int main(void)
 {
- 
+}
 
 // ========================================================================//
 // STORE EVERY 5 MINUTES - Queue structure
 // ========================================================================//
 
-/* 
-!!! NOTES FOR QUEUES FROM COP3502 HAVE BEEN INCLUDED IN A SECOND BRANCH
-*/
+storeTemp
+{
+  if(temp_H == -1)
+    temp_H = 0;
+  temps[++temp_T] = current_temp;
+}
 
-  
+timeCount
+{
+  if(sec % 60 == 0)
+    min++;
+  if(min % 60 == 0)
+    hr++;
+  if((min % 5 == 0) && (sec == 00))
+  {
+    transTemp;
+    storeTemp;
+  }
+  if(MAX_OUT) // If counter is 2^8-1 or 24:59:59 (however we want to do it),
+    reset;    // reset time counter to zero.
+}
+
 // ========================================================================//
 // UART MODES: t, s, o, l
 // ========================================================================//
@@ -98,6 +122,21 @@ Output to the serial terminal the current time of the system using the form hhmm
 hh is the two digit hour in 24-hour format, mm is the two digit minute in the hour, and ss is
 the two digit second within the minute.*/
 
+  currentTime
+  {
+    transTime((time[0]/10) % 3  + '\0');
+    transTime( time[0]     % 10 + '\0');
+    transTime((time[1]/10) % 6  + '\0');
+    transTime( time[1]     % 10 + '\0');
+    transTime((time[2]/10) % 6  + '\0');
+    transTime( time[2]     % 10 + '\0');
+  }
+  
+  transTime
+  {
+    // Transmit time in hhmmss format
+  }
+  
 
 
 /* s: Set the current time of the system.
@@ -106,6 +145,12 @@ the command and its argument. The argument will be on the form hhmmss, where hh 
 two digit hour in 24-hour format, mm is the two digit minute in the hour, and ss is the two
 digit second within the minute.*/
 
+setTime
+{
+  volatile int i;
+  for(i = 0; i < 3; i++, cmd_int++)
+    time[i] = cmd[cmd_int] * 10 + cmd[++cmd_int];
+}
 
 
 /* o: Show the oldest temperature reading and its timestamp.
@@ -115,7 +160,19 @@ the two digit minute in the hour, ss is the two digit second within the minute, 
 measured temperature. The displayed entry must be removed from the list. If no readings
 have been performed, the message “No temperatures recorded.” must be displayed.*/
 
+oldestTemp
+{
+  if (temp_H != -1)
+    transTemp(temps[temp_H++]);
+  else
+    PRINT_ERR;
+}
 
+transTemp
+{
+  transTime();
+  // Additionally, transmit: <'\t'temps[temp_H]>
+}
 
 /* l: Show all the temperature readings and their timestamps.
 Output to the serial terminal all the temperature readings and their timestamps. The output
@@ -125,6 +182,14 @@ the two digit second within the minute, and T is the measured temperature. All e
 be removed from the list. If no readings have been performed, the message “No temperatures
 recorded.” must be displayed. */
 
+transAll
+{
+  if(temp_H == -1)
+    PRINT_ERR;
+  else
+    do{
+      tansTemp(temps[temp_H++]);
+    } while ((temp_H - 1) != temp_T);
   
-  
+  temp_T = temp_H = -1;
 }
