@@ -79,11 +79,27 @@ __bis_SR_register(GIE + CPUOFF + SCG1 + SCG0);
 // Makefile
 // Makefile.in
 
+/* -----------7------------- */
+
+/*
+Need interrupts for:
+
+UART_R
+UART_T
+timer_A
+Push Button 
+Temp
+*/
+
 /* -----------*------------- */
 
 
 int main(void)
 {
+  // Initialize vectors, etc.
+ temp_H = temp_T = -1;
+  
+  __bit_set(GIE | CPUOFF);
 }
 
 // ========================================================================//
