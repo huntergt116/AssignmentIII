@@ -98,7 +98,9 @@ int main(void)
 {
   // Initialize vectors, etc.
  temp_H = temp_T = -1;
-  
+ hr = time[0];
+ min = time[1];
+ sec = time[2];
   __bit_set(GIE | CPUOFF);
 }
 
@@ -124,7 +126,7 @@ timeCount
     transTemp;
     storeTemp;
   }
-  if(MAX_OUT) // If counter is 2^8-1 or 24:59:59 (however we want to do it),
+  if(MAX_OUT) // If counter is 2^8-1 or 23:59:59 (however we want to do it),
     reset;    // reset time counter to zero.
 }
 
