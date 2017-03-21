@@ -75,7 +75,7 @@ __bis_SR_register(GIE + CPUOFF + SCG1 + SCG0);
 // uart.c
 // uart.h
 // bitmanip.h
-// main.c - edit: declare i before the for loop
+// adc.c/main.c - edit: declare i before the for loop
 // Makefile
 // Makefile.in
 
@@ -98,7 +98,7 @@ int main(void)
 {
   // Initialize vectors, etc.
  temp_H = temp_T = -1;
- hr = time[0];
+ hr  = time[0];
  min = time[1];
  sec = time[2];
   __bit_set(GIE | CPUOFF);
@@ -117,17 +117,24 @@ storeTemp
 
 timeCount
 {
-  if(sec % 60 == 0)
+  if(sec == 60)
+  {  
     min++;
-  if(min % 60 == 0)
+    sec = 0;
+  }
+  if(min == 60)
+  {
     hr++;
+    min = 0;
+  }
   if((min % 5 == 0) && (sec == 00))
   {
     transTemp;
     storeTemp;
   }
-  if(MAX_OUT) // If counter is 2^8-1 or 23:59:59 (however we want to do it),
-    reset;    // reset time counter to zero.
+  
+  if((hr == 23) && (min == 59) && (sec == 59))  // If counter is 23:59:59,
+    hr = min = sec = 0;                         // reset time counter to zero.
 }
 
 // ========================================================================//
