@@ -117,6 +117,8 @@ storeTemp
 
 timeCount
 {
+  sec++;
+  
   if(sec == 60)
   {  
     min++;
@@ -133,7 +135,7 @@ timeCount
     storeTemp;
   }
   
-  if((hr == 23) && (min == 59) && (sec == 59))  // If counter is 23:59:59,
+  if((hr == 23) && (min == 59) && (sec == 60))  // If counter is 23:59:59,
     hr = min = sec = 0;                         // reset time counter to zero.
 }
 
@@ -149,17 +151,17 @@ the two digit second within the minute.*/
 
   currentTime
   {
-    transTime((time[0]/10) % 3  + '\0');
-    transTime( time[0]     % 10 + '\0');
-    transTime((time[1]/10) % 6  + '\0');
-    transTime( time[1]     % 10 + '\0');
-    transTime((time[2]/10) % 6  + '\0');
-    transTime( time[2]     % 10 + '\0');
+    transTime((hr/10)  % 3  + '\0');
+    transTime( hr      % 10 + '\0');
+    transTime((min/10) % 6  + '\0');
+    transTime( min     % 10 + '\0');
+    transTime((sec/10) % 6  + '\0');
+    transTime( sec     % 10 + '\0');
   }
   
   transTime
   {
-    // Transmit time in hhmmss format
+    // Transmit time in hhmmss format using UART
   }
   
 
@@ -170,12 +172,12 @@ the command and its argument. The argument will be on the form hhmmss, where hh 
 two digit hour in 24-hour format, mm is the two digit minute in the hour, and ss is the two
 digit second within the minute.*/
 
-setTime
-{
-  volatile int i;
-  for(i = 0; i < 3; i++, cmd_int++)
-    time[i] = cmd[cmd_int] * 10 + cmd[++cmd_int];
-}
+// setTime
+// {
+//   volatile int i;
+//   for(i = 0; i < 3; i++, cmd_int++)
+//     time[i] = cmd[cmd_int] * 10 + cmd[++cmd_int];
+// }
 
 
 /* o: Show the oldest temperature reading and its timestamp.
